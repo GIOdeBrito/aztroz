@@ -63,7 +63,7 @@ void control_player (SDL_Event event, player_t* player)
 		float radians = GRATORAD(player->angle);
 		double dX = cos(radians) * .03;
 		double dY = sin(radians) * .03;
-    	player->rect.x += dX;
-    	player->rect.y += dY;
+		player->rect.x += dX;
+		player->rect.y += dY;
 	}
 }

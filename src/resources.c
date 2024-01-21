@@ -18,7 +18,7 @@ void LoadTextures (SDL_Renderer* renderer)
 
 		if (_texture == NULL)
 		{
-			printf("Falha ao carregar: %s\n", sprites[i]);
+			printf("Failed to load: %s\n", sprites[i]);
 		}
 
 		textures[i] = _texture;
@@ -31,7 +31,7 @@ void UnloadTextures (void)
 
 	for(int i = 0; i < len; i++)
 	{
-		printf("Descarregando sprite... INDEX = %d\n", i);
+		printf("Unloading sprite... INDEX = %d\n", i);
 		SDL_DestroyTexture(textures[i]);
 	}
 }
