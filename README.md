@@ -25,6 +25,7 @@ sudo apt-get install libsdl2-image-dev
 ```
 
 ## Build
+Simply run the make command on the root directory.
 ```bash
-gcc main.c resources.c control.c -o aztroz -I/usr/include/SDL2/ -lSDL2 -lSDL2_image -lm
+make
 ```
