@@ -2,21 +2,6 @@
 #include <SDL2/SDL.h>
 #include "global.h"
 
-SDL_Renderer* CreateAztrozRenderer (SDL_Window* win)
-{
-	SDL_Renderer* renderer = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED);
-
-	if(renderer == NULL)
-	{
-		printf("Was not able to create SDL renderer");
-		SDL_DestroyWindow(win);
-		SDL_DestroyRenderer(renderer);
-		exit(-1);
-	}
-
-	return renderer;
-}
-
 void GameLoop (SDL_Window* window, SDL_Renderer* renderer)
 {
 	int win_X = 0;
@@ -31,25 +16,51 @@ void GameLoop (SDL_Window* window, SDL_Renderer* renderer)
         .pivot = { player.rect.w / 2, player.rect.h / 2 },
 	};
 
+	const int meteor_max_number = 6;
+
+	meteor_t meteors[meteor_max_number];
+
+	for(int i = 0; i < meteor_max_number; i++)
+	{
+		meteors[i] = (meteor_t) {
+			.sz = 32,
+			.angle = 0,
+			.rect = { .x = 30, .y = 30, .w = 32, .h = 32 },
+			.pivot = { 32 / 2, 32 / 2 }
+		};
+	}
+
+	printf("METEOR LENGTH: %ld\n", LENGTH(meteors));
+
 	while(true)
 	{
 		SDL_Event event;
 
 		if(SDL_PollEvent(&event))
 		{
-			if(event.type == SDL_QUIT)
-				break;
+			if(event.type == SDL_QUIT) break;
 		}
 
 		control_player(event, &player);
 
-		// Limpa a tela
 		SDL_RenderClear(renderer);
 
-		// Renderiza o jogador
+		// Renders player
 		SDL_RenderCopyExF(renderer, UseTexture(0), NULL, &player.rect, player.angle, &player.pivot, SDL_FLIP_NONE);
 
-		// Mostra tudo a ser renderizado
+		RenderMeteors(meteors, LENGTH(meteors), renderer);
+
 		SDL_RenderPresent(renderer);
 	}
 }
+
+void RenderMeteors (meteor_t* meteors, size_t length, SDL_Renderer* renderer)
+{
+	for(int i = 0; i < length; i++)
+	{
+		//printf("%1.2f\n", &meteors[i].rect.x);
+
+		SDL_RenderCopyExF(renderer, UseTexture(1), NULL, &meteors[i].rect, meteors[i].angle, &meteors[i].pivot, SDL_FLIP_NONE);
+	}
+}
+

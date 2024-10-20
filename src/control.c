@@ -37,12 +37,12 @@ void control_player (SDL_Event event, player_t* player)
 		}
 	}
 
-	// Esquerda
+	// Left
 	if(key_player_direction == 1)
 	{
 		player->angle += PLAYER_ROTATION * PLAYER_ROTATION_MULT;
 	}
-	// Direita
+	// Right
 	else if(key_player_direction == 2)
 	{
 		player->angle -= PLAYER_ROTATION * PLAYER_ROTATION_MULT;
@@ -57,13 +57,20 @@ void control_player (SDL_Event event, player_t* player)
 		player->angle = 0.0f;
 	}
 
-	// Mover nave
+	// Move player ship
 	if(move_player == 1)
 	{
 		float radians = GRATORAD(player->angle);
 		double dX = cos(radians) * .03;
 		double dY = sin(radians) * .03;
+
 		player->rect.x += dX;
 		player->rect.y += dY;
 	}
 }
+
+void control_meteors2 (meteor_t* meteors, SDL_Renderer* renderer)
+{
+	printf("METEORS X %1.2lf\n", meteors->angle);
+}
+

@@ -23,11 +23,12 @@ int main (void)
 	GameLoop(window, renderer);
 
 	UnloadTextures();
+
+	printf("Shutting down...\n");
+
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 	SDL_Quit();
-
-	printf("Shutting down...\n");
 
 	return 0;
 }
