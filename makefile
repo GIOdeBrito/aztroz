@@ -12,7 +12,7 @@ HEADER = global.h
 
 # Source files / scripts
 SOURCE_DIR = src
-SOURCE = main.c control.c resources.c render.c window.c
+SOURCE = main.c control.c resources.c render.c window.c utility.c
 
 # Object files
 OBJ_DIR = objects

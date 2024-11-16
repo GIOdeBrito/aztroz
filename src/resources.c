@@ -20,6 +20,7 @@ void LoadTextures (SDL_Renderer* renderer)
 		if(_texture == NULL)
 		{
 			printf("Failed to load: %s\n", sprites[i]);
+			continue;
 		}
 
 		textures[i] = _texture;

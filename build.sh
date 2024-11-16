@@ -11,3 +11,5 @@ docker-compose up -d
 docker cp main-aztroz-game-container:/usr/src/aztroz-game/aztroz.game .
 
 docker-compose down
+
+./aztroz.game

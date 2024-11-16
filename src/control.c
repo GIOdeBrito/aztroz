@@ -6,7 +6,7 @@
 int key_player_direction = -1;
 int move_player = -1;
 
-void control_player (SDL_Event event, player_t* player)
+void PlayerController (SDL_Event event, player_t* player)
 {
 	if(event.type == SDL_KEYDOWN)
 	{
@@ -67,10 +67,5 @@ void control_player (SDL_Event event, player_t* player)
 		player->rect.x += dX;
 		player->rect.y += dY;
 	}
-}
-
-void control_meteors2 (meteor_t* meteors, SDL_Renderer* renderer)
-{
-	printf("METEORS X %1.2lf\n", meteors->angle);
 }
 

@@ -13,7 +13,7 @@ void GameLoop (SDL_Window* window, SDL_Renderer* renderer)
 	    .sz = PLAYER_SIZE,
         .angle = -90,
         .rect = { .x = win_X / 2, .y = win_Y / 2, .w = player.sz, .h = player.sz },
-        .pivot = { player.rect.w / 2, player.rect.h / 2 },
+        .pivot = { player.rect.w / 2, player.rect.h / 2 }
 	};
 
 	const int meteor_max_number = 6;
@@ -30,8 +30,6 @@ void GameLoop (SDL_Window* window, SDL_Renderer* renderer)
 		};
 	}
 
-	printf("METEOR LENGTH: %ld\n", LENGTH(meteors));
-
 	while(true)
 	{
 		SDL_Event event;
@@ -41,26 +39,42 @@ void GameLoop (SDL_Window* window, SDL_Renderer* renderer)
 			if(event.type == SDL_QUIT) break;
 		}
 
-		control_player(event, &player);
-
 		SDL_RenderClear(renderer);
+
+		PlayerController(event, &player);
+		MeteorController(meteors, LENGTH(meteors), renderer);
 
 		// Renders player
 		SDL_RenderCopyExF(renderer, UseTexture(0), NULL, &player.rect, player.angle, &player.pivot, SDL_FLIP_NONE);
-
-		RenderMeteors(meteors, LENGTH(meteors), renderer);
 
 		SDL_RenderPresent(renderer);
 	}
 }
 
-void RenderMeteors (meteor_t* meteors, size_t length, SDL_Renderer* renderer)
+void MeteorController (meteor_t* meteors, size_t length, SDL_Renderer* renderer)
 {
 	for(int i = 0; i < length; i++)
 	{
-		//printf("%1.2f\n", &meteors[i].rect.x);
+		meteor_t* meteor = &meteors[i];
 
-		SDL_RenderCopyExF(renderer, UseTexture(1), NULL, &meteors[i].rect, meteors[i].angle, &meteors[i].pivot, SDL_FLIP_NONE);
+		meteor->angle += 0.85 * METEOR_ROTATION_SPEED;
+		meteor->rect.x += 0.35 * METEOR_TRANSFORM_SPEED;
+
+		SDL_RenderCopyExF(
+			renderer,
+			UseTexture(1),
+			NULL,
+			&meteor->rect,
+			meteor->angle,
+			&meteor->pivot,
+			SDL_FLIP_NONE
+		);
+
+		if(meteor->rect.x > (double) SCREEN_X)
+		{
+			meteor->rect.x = 0.0;
+			meteor->rect.y = (double) RandRange(1, SCREEN_Y);
+		}
 	}
 }
 
