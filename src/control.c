@@ -8,6 +8,43 @@ int move_player = -1;
 
 void PlayerController (SDL_Event event, player_t* player)
 {
+	PlayerMoveKeyboard(event);
+	PlayerMoveGamepad(event);
+
+	// Left
+	if(key_player_direction == 1)
+	{
+		player->angle += PLAYER_ROTATION * PLAYER_ROTATION_MULT;
+	}
+	// Right
+	else if(key_player_direction == 2)
+	{
+		player->angle -= PLAYER_ROTATION * PLAYER_ROTATION_MULT;
+	}
+
+	if(player->angle > 360.0f)
+	{
+		player->angle = 0.0f;
+	}
+	else if(player->angle < -360.0f)
+	{
+		player->angle = 0.0f;
+	}
+
+	// Move player ship
+	if(move_player == 1)
+	{
+		float radians = GRATORAD(player->angle);
+		double dX = cos(radians) * 2;
+		double dY = sin(radians) * 2;
+
+		player->rect.x += dX;
+		player->rect.y += dY;
+	}
+}
+
+void PlayerMoveKeyboard (SDL_Event event)
+{
 	if(event.type == SDL_KEYDOWN)
 	{
 		if(event.key.keysym.sym == SDLK_LEFT)
@@ -36,36 +73,39 @@ void PlayerController (SDL_Event event, player_t* player)
 			move_player = -1;
 		}
 	}
+}
 
-	// Left
-	if(key_player_direction == 1)
+void PlayerMoveGamepad (SDL_Event event)
+{
+	if(event.type == SDL_CONTROLLERBUTTONDOWN)
 	{
-		player->angle += PLAYER_ROTATION * PLAYER_ROTATION_MULT;
-	}
-	// Right
-	else if(key_player_direction == 2)
-	{
-		player->angle -= PLAYER_ROTATION * PLAYER_ROTATION_MULT;
-	}
+		printf("BUTTON DOWN DPAD\n");
 
-	if(player->angle > 360.0f)
-	{
-		player->angle = 0.0f;
+		if(event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_LEFT)
+		{
+			key_player_direction = 1;
+		}
+		else if(event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_RIGHT)
+		{
+			key_player_direction = 2;
+		}
+		if(event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_UP)
+		{
+			move_player = 1;
+		}
 	}
-	else if(player->angle < -360.0f)
+	else if(event.type == SDL_CONTROLLERBUTTONUP)
 	{
-		player->angle = 0.0f;
-	}
+		if(event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_LEFT
+		|| event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_RIGHT)
+		{
+			key_player_direction = -1;
+		}
 
-	// Move player ship
-	if(move_player == 1)
-	{
-		float radians = GRATORAD(player->angle);
-		double dX = cos(radians) * .03;
-		double dY = sin(radians) * .03;
-
-		player->rect.x += dX;
-		player->rect.y += dY;
+		if(event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_UP)
+		{
+			move_player = -1;
+		}
 	}
 }
 

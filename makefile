@@ -4,22 +4,24 @@
 # =========================================================
 
 # Default architecture
-ARCH ?= x86
+ARCH ?= x86_64
 
-ifeq ($(ARCH), x86)
+ifeq ($(ARCH), x86_64)
 	COMPILER = gcc
 	CFLAGS = 	-I/usr/include/SDL2/ \
-				-lSDL2 \
-				-lSDL2_image \
-				-lm # Math library
+	-lSDL2 \
+	-lSDL2_image \
+	-lm \
+	-lSDL2_ttf
 	PROJECT = aztroz.x86_64
 else
 	COMPILER = arm-linux-gnueabihf-gcc
-    CFLAGS = -I/usr/include/SDL2/ \
-             -lSDL2 \
-             -lSDL2_image \
-             -lm \
-             -L/usr/lib/arm-linux-gnueabihf/ # ARM library path
+	CFLAGS = 	-I/usr/include/SDL2/ \
+	-lSDL2 \
+	-lSDL2_image \
+	-lm \
+	-lSDL2_ttf \
+	-L/usr/lib/arm-linux-gnueabihf/
 	PROJECT = aztroz.arm
 endif
 

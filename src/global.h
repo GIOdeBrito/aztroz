@@ -5,11 +5,11 @@
 #define SCREEN_Y 600
 
 #define PLAYER_SIZE 32
-#define PLAYER_ROTATION .3f
-#define PLAYER_ROTATION_MULT .1
+#define PLAYER_ROTATION 1.25f
+#define PLAYER_ROTATION_MULT 3.5f
 
-#define METEOR_TRANSFORM_SPEED 0.065
-#define METEOR_ROTATION_SPEED 0.005
+#define METEOR_TRANSFORM_SPEED 5.0f
+#define METEOR_ROTATION_SPEED 2.0f
 
 #define LENGTH(x) sizeof(x) / sizeof(x[0])
 #define GRATORAD(x) x * 0.01745329251f
@@ -40,8 +40,11 @@ SDL_Window* CreateAztrozWindow(void);
 SDL_Renderer* CreateAztrozRenderer(SDL_Window*);
 
 void GameLoop(SDL_Window*, SDL_Renderer*);
+void RenderFPSOnScreen (SDL_Renderer*);
 
 void PlayerController(SDL_Event, player_t*);
+void PlayerMoveKeyboard(SDL_Event);
+void PlayerMoveGamepad(SDL_Event);
 void MeteorController(meteor_t*, size_t, SDL_Renderer*);
 
 void LoadTextures(SDL_Renderer*);
