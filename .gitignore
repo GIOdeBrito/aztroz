@@ -1,5 +1,7 @@
 
 aztroz
 aztroz.game
+aztroz.arm
+aztroz.x86_64
 /objects/*
 objects/
