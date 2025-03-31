@@ -2,6 +2,7 @@
 #include <math.h>
 #include <SDL2/SDL.h>
 #include "global.h"
+#include "resources.h"
 
 int key_player_direction = -1;
 int move_player = -1;
@@ -120,7 +121,7 @@ void MeteorController (meteor_t* meteors, size_t length, SDL_Renderer* renderer)
 
 		SDL_RenderCopyExF(
 			renderer,
-			UseTexture(1),
+			GetSprite(1),
 			NULL,
 			&meteor->rect,
 			meteor->angle,

@@ -2,6 +2,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 #include "global.h"
+#include "controller.h"
 
 void GameLoop (SDL_Window* window, SDL_Renderer* renderer)
 {
@@ -46,6 +47,8 @@ void GameLoop (SDL_Window* window, SDL_Renderer* renderer)
 			if(event.type == SDL_QUIT) break;
 		}
 
+		DetectController();
+
 		// Clear the screen
 		SDL_RenderClear(renderer);
 
@@ -75,7 +78,7 @@ void GameLoop (SDL_Window* window, SDL_Renderer* renderer)
 		MeteorController(meteors, LENGTH(meteors), renderer);
 
 		// Renders player
-		SDL_RenderCopyExF(renderer, UseTexture(0), NULL, &player.rect, player.angle, &player.pivot, SDL_FLIP_NONE);
+		SDL_RenderCopyExF(renderer, GetSprite(0), NULL, &player.rect, player.angle, &player.pivot, SDL_FLIP_NONE);
 
 		// Renders text
 		SDL_RenderCopy(renderer, textTexture, NULL, &textRect);
@@ -87,6 +90,7 @@ void GameLoop (SDL_Window* window, SDL_Renderer* renderer)
 	}
 
 	TTF_CloseFont(font);
+	DestroyController();
 }
 
 void RenderFPSOnScreen (SDL_Renderer* renderer)

@@ -25,18 +25,18 @@ else
 	PROJECT = aztroz.arm
 endif
 
-HEADER = global.h
+HEADER = global.h controller.h window.h resources.h
 
 # Source files / scripts
 SOURCE_DIR = src
-SOURCE = main.c control.c resources.c render.c window.c utility.c
+SOURCE = main.c control.c resources.c render.c window.c utility.c controller.c
 
 # Object files
 OBJ_DIR = objects
 _OBJ = $(patsubst %.c, %.o, $(SOURCE))
 OBJ = $(patsubst %, $(OBJ_DIR)/%, $(_OBJ))
 
-$(OBJ_DIR)/%.o: $(SOURCE_DIR)/%.c $(SOURCE_DIR)/$(HEADER)
+$(OBJ_DIR)/%.o: $(SOURCE_DIR)/%.c $(SOURCE_DIR)/*.h
 	$(COMPILER) -c -o $@ $< $(CFLAGS)
 
 $(PROJECT): $(OBJ)

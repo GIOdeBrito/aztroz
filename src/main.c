@@ -4,8 +4,8 @@
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
 #include "global.h"
-
-SDL_GameController* gameController = NULL;
+#include "window.h"
+#include "resources.h"
 
 int main (void)
 {
@@ -19,32 +19,20 @@ int main (void)
 
 	TTF_Init();
 
-	SDL_Window* window = CreateAztrozWindow();
-	SDL_Renderer* renderer = CreateAztrozRenderer(window);
+	InitWindow();
+	InitRenderer();
 
-	gameController = SDL_GameControllerOpen(0);
-
-	if(gameController)
-	{
-		printf("Connected controller %s", SDL_GameControllerName(gameController));
-	}
-
-	LoadTextures(renderer);
+	LoadSprites();
 
 	// Starts the main game loop
-	GameLoop(window, renderer);
+	GameLoop(GetWindow(), GetRenderer());
 
 	printf("Shutting down...\n");
 
-	UnloadTextures();
+	UnloadSprites();
 
-	if(gameController != NULL)
-	{
-		SDL_GameControllerClose(gameController);
-	}
-
-	SDL_DestroyWindow(window);
-	SDL_DestroyRenderer(renderer);
+	DestroyRenderer();
+	DestroyWindow();
 
 	TTF_Quit();
 	IMG_Quit();

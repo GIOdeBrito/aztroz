@@ -2,31 +2,60 @@
 #include <SDL2/SDL.h>
 #include "global.h"
 
-SDL_Window* CreateAztrozWindow (void)
+SDL_Window* window = NULL;
+SDL_Renderer* renderer = NULL;
+
+int InitWindow (void)
 {
-	SDL_Window* window = NULL;
-	window = SDL_CreateWindow(GAME_NAME,SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,SCREEN_X,SCREEN_Y,SDL_WINDOW_SHOWN);
+	window = SDL_CreateWindow(PROJECT,SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,SCREEN_X,SCREEN_Y,SDL_WINDOW_SHOWN);
 
 	if(window == NULL)
 	{
-		printf("Was not able to create game window");
-		exit(-6);
+		printf("Was not able to create game window\n");
+		SDL_DestroyWindow(window);
+		exit(-1);
 	}
 
-	return window;
+	return 0;
 }
 
-SDL_Renderer* CreateAztrozRenderer (SDL_Window* win)
+int InitRenderer (void)
 {
-	SDL_Renderer* renderer = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	if(window == NULL)
+	{
+		printf("Window must be created before renderer\n");
+		exit(-1);
+	}
+
+	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
 	if(renderer == NULL)
 	{
-		printf("Was not able to create SDL renderer");
-		SDL_DestroyWindow(win);
+		printf("Was not able to create SDL renderer\n");
+		SDL_DestroyWindow(window);
 		SDL_DestroyRenderer(renderer);
 		exit(-1);
 	}
 
+	return 0;
+}
+
+SDL_Window* GetWindow (void)
+{
+	return window;
+}
+
+SDL_Renderer* GetRenderer (void)
+{
 	return renderer;
+}
+
+void DestroyWindow (void)
+{
+	SDL_DestroyWindow(window);
+}
+
+void DestroyRenderer (void)
+{
+	SDL_DestroyRenderer(renderer);
 }

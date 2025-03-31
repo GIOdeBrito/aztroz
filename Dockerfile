@@ -7,12 +7,9 @@ WORKDIR ./usr/src/aztroz-game
 
 ARG BUILD_ARCH=""
 
-RUN dpkg --add-architecture armhf
-RUN apt-get update
-
 # Install x86_64 packages
 RUN if [ "$BUILD_ARCH" = "X86_64" ]; then \
-		echo "Adding packages for X86_64"; \
+		apt-get update; \
 		apt-get install -y libsdl2-dev; \
 		apt-get install -y libsdl2-image-dev; \
 		apt-get install -y libsdl2-ttf-dev; \
@@ -20,7 +17,8 @@ RUN if [ "$BUILD_ARCH" = "X86_64" ]; then \
 
 # Install packages for ARM
 RUN if [ "$BUILD_ARCH" = "ARM" ]; then \
-		echo "Adding packages for ARM"; \
+		dpkg --add-architecture armhf; \
+		apt-get update; \
 		apt-get install -y gcc-arm-linux-gnueabihf; \
 		apt-get install -y libsdl2-dev:armhf; \
 		apt-get install -y libsdl2-image-dev:armhf; \

@@ -1,5 +1,5 @@
 
-#define GAME_NAME "Aztroz Game"
+#define PROJECT "Aztroz Game"
 
 #define SCREEN_X 800
 #define SCREEN_Y 600
@@ -36,9 +36,6 @@ typedef struct {
 	SDL_FPoint pivot;
 } meteor_t;
 
-SDL_Window* CreateAztrozWindow(void);
-SDL_Renderer* CreateAztrozRenderer(SDL_Window*);
-
 void GameLoop(SDL_Window*, SDL_Renderer*);
 void RenderFPSOnScreen (SDL_Renderer*);
 
@@ -46,9 +43,5 @@ void PlayerController(SDL_Event, player_t*);
 void PlayerMoveKeyboard(SDL_Event);
 void PlayerMoveGamepad(SDL_Event);
 void MeteorController(meteor_t*, size_t, SDL_Renderer*);
-
-void LoadTextures(SDL_Renderer*);
-void UnloadTextures(void);
-SDL_Texture* UseTexture(int);
 
 int RandRange(int, int);

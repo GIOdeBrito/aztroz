@@ -1,49 +1,49 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include "global.h"
+#include "resources.h"
+#include "window.h"
 
-#define MAX_TEXTURES 64
+SDL_Texture* sprites[MAX_TEXTURES];
 
-SDL_Texture* textures[MAX_TEXTURES];
-
-void LoadTextures (SDL_Renderer* renderer)
+void LoadSprites (void)
 {
-	char sprites[][20] = {
+	char _sprites[][20] = {
 		"graphics/ship.png",
 		"graphics/meteor.png"
 	};
 
-	for(int i = 0; i < LENGTH(sprites); i++)
+	for(int i = 0; i < LENGTH(_sprites); i++)
 	{
-		SDL_Texture* _texture = IMG_LoadTexture(renderer, sprites[i]);
+		SDL_Texture* _texture = IMG_LoadTexture(GetRenderer(), _sprites[i]);
 
 		if(_texture == NULL)
 		{
-			printf("Failed to load: %s\n", sprites[i]);
+			printf("Failed to load: %s\n", _sprites[i]);
 			continue;
 		}
 
-		textures[i] = _texture;
+		sprites[i] = _texture;
 	}
 }
 
-void UnloadTextures (void)
+void UnloadSprites (void)
 {
-	size_t len = LENGTH(textures);
+	size_t len = LENGTH(sprites);
 
 	for(int i = 0; i < len; i++)
 	{
-		if(textures[i] == NULL)
+		if(sprites[i] == NULL)
 		{
 			continue;
 		}
 
 		printf("Unloading sprite... INDEX = %d\n", i);
-		SDL_DestroyTexture(textures[i]);
+		SDL_DestroyTexture(sprites[i]);
 	}
 }
 
-SDL_Texture* UseTexture (int i)
+SDL_Texture* GetSprite (int i)
 {
-	return textures[i];
+	return sprites[i];
 }
