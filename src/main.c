@@ -25,7 +25,7 @@ int main (void)
 	LoadSprites();
 
 	// Starts the main game loop
-	GameLoop(GetWindow(), GetRenderer());
+	GameLoop();
 
 	printf("Shutting down...\n");
 

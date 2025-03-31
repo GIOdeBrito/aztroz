@@ -2,12 +2,54 @@
 #include <math.h>
 #include <SDL2/SDL.h>
 #include "global.h"
+#include "player.h"
 #include "resources.h"
+#include "window.h"
 
 int key_player_direction = -1;
 int move_player = -1;
 
-void PlayerController (SDL_Event event, player_t* player)
+player_t player = {0};
+
+void InstantiatePlayer (void)
+{
+	player = (player_t) {
+	    .sz = PLAYER_SIZE,
+        .angle = -90,
+		.rect = { .x = GetWindowX() / 2, .y = GetWindowY() / 2, .w = PLAYER_SIZE, .h = PLAYER_SIZE }
+	};
+
+	player.pivot.x = player.rect.w / 2;
+	player.pivot.y = player.rect.h / 2;
+}
+
+void UpdatePlayer (SDL_Event event)
+{
+	PlayerController(event);
+
+	// Renders the player on-screen
+	SDL_RenderCopyExF(
+		GetRenderer(),
+		GetSprite(0),
+		NULL,
+		&player.rect,
+		player.angle,
+		&player.pivot,
+		SDL_FLIP_NONE
+	);
+}
+
+int PlayerPosX (void)
+{
+	return player.rect.x;
+}
+
+int PlayerPosY (void)
+{
+	return player.rect.y;
+}
+
+void PlayerController (SDL_Event event)
 {
 	PlayerMoveKeyboard(event);
 	PlayerMoveGamepad(event);
@@ -15,33 +57,35 @@ void PlayerController (SDL_Event event, player_t* player)
 	// Left
 	if(key_player_direction == 1)
 	{
-		player->angle += PLAYER_ROTATION * PLAYER_ROTATION_MULT;
+		player.angle += PLAYER_ROTATION * PLAYER_ROTATION_MULT;
 	}
 	// Right
 	else if(key_player_direction == 2)
 	{
-		player->angle -= PLAYER_ROTATION * PLAYER_ROTATION_MULT;
+		player.angle -= PLAYER_ROTATION * PLAYER_ROTATION_MULT;
 	}
 
-	if(player->angle > 360.0f)
+	if(player.angle > 360.0f)
 	{
-		player->angle = 0.0f;
+		player.angle = 0.0f;
 	}
-	else if(player->angle < -360.0f)
+	else if(player.angle < -360.0f)
 	{
-		player->angle = 0.0f;
+		player.angle = 0.0f;
 	}
 
 	// Move player ship
-	if(move_player == 1)
+	if(move_player != 1)
 	{
-		float radians = GRATORAD(player->angle);
-		double dX = cos(radians) * 2;
-		double dY = sin(radians) * 2;
-
-		player->rect.x += dX;
-		player->rect.y += dY;
+		return;
 	}
+
+	float radians = GRATORAD(player.angle);
+	double dX = cos(radians) * 2;
+	double dY = sin(radians) * 2;
+
+	player.rect.x += dX;
+	player.rect.y += dY;
 }
 
 void PlayerMoveKeyboard (SDL_Event event)
@@ -80,8 +124,6 @@ void PlayerMoveGamepad (SDL_Event event)
 {
 	if(event.type == SDL_CONTROLLERBUTTONDOWN)
 	{
-		printf("BUTTON DOWN DPAD\n");
-
 		if(event.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_LEFT)
 		{
 			key_player_direction = 1;
@@ -109,31 +151,3 @@ void PlayerMoveGamepad (SDL_Event event)
 		}
 	}
 }
-
-void MeteorController (meteor_t* meteors, size_t length, SDL_Renderer* renderer)
-{
-	for(int i = 0; i < length; i++)
-	{
-		meteor_t* meteor = &meteors[i];
-
-		meteor->angle += 0.85 * METEOR_ROTATION_SPEED;
-		meteor->rect.x += 0.35 * METEOR_TRANSFORM_SPEED;
-
-		SDL_RenderCopyExF(
-			renderer,
-			GetSprite(1),
-			NULL,
-			&meteor->rect,
-			meteor->angle,
-			&meteor->pivot,
-			SDL_FLIP_NONE
-		);
-
-		if(meteor->rect.x > (double) SCREEN_X)
-		{
-			meteor->rect.x = 0.0;
-			meteor->rect.y = (double) RandRange(1, SCREEN_Y);
-		}
-	}
-}
-

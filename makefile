@@ -25,11 +25,11 @@ else
 	PROJECT = aztroz.arm
 endif
 
-HEADER = global.h controller.h window.h resources.h
+HEADER = global.h player.h controller.h window.h resources.h text.h
 
 # Source files / scripts
 SOURCE_DIR = src
-SOURCE = main.c control.c resources.c render.c window.c utility.c controller.c
+SOURCE = main.c player.c hazard.c resources.c render.c window.c utility.c controller.c text.c
 
 # Object files
 OBJ_DIR = objects

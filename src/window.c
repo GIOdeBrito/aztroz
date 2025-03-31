@@ -5,6 +5,9 @@
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
 
+int win_X = 0;
+int win_Y = 0;
+
 int InitWindow (void)
 {
 	window = SDL_CreateWindow(PROJECT,SDL_WINDOWPOS_UNDEFINED,SDL_WINDOWPOS_UNDEFINED,SCREEN_X,SCREEN_Y,SDL_WINDOW_SHOWN);
@@ -15,6 +18,8 @@ int InitWindow (void)
 		SDL_DestroyWindow(window);
 		exit(-1);
 	}
+
+	SDL_GetWindowSize(window, &win_X, &win_Y);
 
 	return 0;
 }
@@ -48,6 +53,16 @@ SDL_Window* GetWindow (void)
 SDL_Renderer* GetRenderer (void)
 {
 	return renderer;
+}
+
+int GetWindowX (void)
+{
+	return win_X;
+}
+
+int GetWindowY (void)
+{
+	return win_Y;
 }
 
 void DestroyWindow (void)
