@@ -9,6 +9,12 @@ typedef struct {
     SDL_FPoint pivot;
 } player_t;
 
+typedef struct {
+	int sz;
+    SDL_FRect rect;
+    SDL_FPoint pivot;
+} projectile_t;
+
 void InstantiatePlayer(void);
 void UpdatePlayer(SDL_Event);
 int PlayerPosX(void);

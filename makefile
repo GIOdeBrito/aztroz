@@ -25,7 +25,7 @@ else
 	PROJECT = aztroz.arm
 endif
 
-HEADER = global.h player.h controller.h window.h resources.h text.h
+HEADER = global.h player.h hazard.h resources.h window.h controller.h text.h
 
 # Source files / scripts
 SOURCE_DIR = src

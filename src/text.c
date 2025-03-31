@@ -13,15 +13,10 @@ float fps = 0;
 TTF_Font* roboto24 = NULL;
 TTF_Font* roboto12 = NULL;
 
-text_t textTextures[MAX_TEXT_ONSCREEN];
+text_t textObjects[MAX_TEXT_ONSCREEN] = {0};
 
 void InitText (void)
 {
-	for(int i = 0; i < MAX_TEXT_ONSCREEN; i++)
-	{
-		textTextures[i] = (text_t) {0};
-	}
-
 	roboto24 = TTF_OpenFont("graphics/roboto.ttf", 24);
 	roboto12 = TTF_OpenFont("graphics/roboto.ttf", 12);
 }
@@ -34,7 +29,7 @@ void DrawOnScreenText (void)
 	for(int i = 0; i < MAX_TEXT_ONSCREEN; i++)
 	{
 		// Renders text texture
-		SDL_RenderCopy(GetRenderer(), textTextures[i].texture, NULL, &textTextures[i].rect);
+		SDL_RenderCopy(GetRenderer(), textObjects[i].texture, NULL, &textObjects[i].rect);
 	}
 }
 
@@ -42,15 +37,15 @@ void ClearOnScreenText (void)
 {
 	for(int i = 0; i < MAX_TEXT_ONSCREEN; i++)
 	{
-		if(textTextures[i].texture == NULL)
+		if(textObjects[i].texture == NULL)
 		{
 			continue;
 		}
 
-		SDL_DestroyTexture(textTextures[i].texture);
+		SDL_DestroyTexture(textObjects[i].texture);
 
-		textTextures[i].texture = NULL;
-		textTextures[i].rect = (SDL_Rect) {0};
+		textObjects[i].texture = NULL;
+		textObjects[i].rect = (SDL_Rect) {0};
 	}
 }
 
@@ -60,21 +55,21 @@ void QueueText (char* text, int x, int y, TTF_Font* font)
 
 	SDL_Surface* textSurface = TTF_RenderText_Solid(roboto12, text, textColor);
 	SDL_Rect textRect = { x, y, textSurface->w, textSurface->h };
+	
 	SDL_Texture* textTexture = SDL_CreateTextureFromSurface(GetRenderer(), textSurface);
+	SDL_FreeSurface(textSurface);
 
 	for(int i = 0; i < MAX_TEXT_ONSCREEN; i++)
 	{
-		if(textTextures[i].texture != NULL)
+		if(textObjects[i].texture != NULL)
 		{
 			continue;
 		}
 
-		textTextures[i].texture = textTexture;
-		textTextures[i].rect = textRect;
+		textObjects[i].texture = textTexture;
+		textObjects[i].rect = textRect;
 		break;
 	}
-
-	SDL_FreeSurface(textSurface);
 }
 
 void DrawFPS (void)

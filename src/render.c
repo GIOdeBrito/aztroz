@@ -3,6 +3,7 @@
 #include <SDL2/SDL_ttf.h>
 #include "global.h"
 #include "player.h"
+#include "hazard.h"
 #include "controller.h"
 #include "window.h"
 #include "text.h"
@@ -12,20 +13,7 @@ void GameLoop (void)
 	InstantiatePlayer();
 
 	InitText();
-
-	const int METEOR_MAX_NUMBER = 6;
-
-	meteor_t meteors[METEOR_MAX_NUMBER];
-
-	for(int i = 0; i < METEOR_MAX_NUMBER; i++)
-	{
-		meteors[i] = (meteor_t) {
-			.sz = 32,
-			.angle = 0,
-			.rect = { .x = 30, .y = 30, .w = 32, .h = 32 },
-			.pivot = { 32 / 2, 32 / 2 }
-		};
-	}
+	InitHazards();
 
 	while(true)
 	{
@@ -48,7 +36,7 @@ void GameLoop (void)
 		DrawOnScreenText();
 
 		UpdatePlayer(event);
-		MeteorController(meteors, LENGTH(meteors), GetRenderer());
+		UpdateMeteors();
 
 		SDL_RenderPresent(GetRenderer());
 
