@@ -4,21 +4,29 @@
 #include "global.h"
 #include "player.h"
 #include "window.h"
+#include "dictionary.h"
 #include "text.h"
 
-Uint32 lastTime = 0, currentTime;
+Uint32 lastTime = 0, currentTime = 0;
 int frameCount = 0;
 float fps = 0;
 
-TTF_Font* roboto24 = NULL;
-TTF_Font* roboto12 = NULL;
-
+TTF_Font* fonts[MAX_LOADED_FONTS] = { NULL };
 text_t textObjects[MAX_TEXT_ONSCREEN] = {0};
 
 void InitText (void)
 {
-	roboto24 = TTF_OpenFont("graphics/roboto.ttf", 24);
-	roboto12 = TTF_OpenFont("graphics/roboto.ttf", 12);
+	DDictionary_t kvp[] = {
+		{ "data/retro.ttf", 16 },
+		{ "data/retro.ttf", 22 },
+		{ "data/retro.ttf", 24 }
+	};
+
+	// Load fonts
+	for(int i = 0; i < LENGTH(kvp); i++)
+	{
+		fonts[i] = TTF_OpenFont(kvp[i].key, kvp[i].value);
+	}
 }
 
 void DrawOnScreenText (void)
@@ -49,13 +57,13 @@ void ClearOnScreenText (void)
 	}
 }
 
-void QueueText (char* text, int x, int y, TTF_Font* font)
+void QueueText (char* text, int x, int y)
 {
 	SDL_Color textColor = { 255, 255, 255, 255 };
 
-	SDL_Surface* textSurface = TTF_RenderText_Solid(roboto12, text, textColor);
+	SDL_Surface* textSurface = TTF_RenderText_Solid(fonts[0], text, textColor);
 	SDL_Rect textRect = { x, y, textSurface->w, textSurface->h };
-	
+
 	SDL_Texture* textTexture = SDL_CreateTextureFromSurface(GetRenderer(), textSurface);
 	SDL_FreeSurface(textSurface);
 
@@ -89,20 +97,30 @@ void DrawFPS (void)
 	char fpsText[32];
 	sprintf(fpsText, "FPS: %.2f", fps);
 
-	QueueText(fpsText, 0, 0, NULL);
+	QueueText(fpsText, 0, 0);
 }
 
 void DrawPlayerPosition(void)
 {
-	char pos[32];
-	sprintf(pos, "X: %d | Y: %d", PlayerPosX(), PlayerPosY());
+	char pos[38];
+	sprintf(pos, "X: %d | Y: %d | ANGLE: %d", GetPlayerPosX(), GetPlayerPosY(), GetPlayerAngle());
 
-	QueueText(pos, 0, 20, NULL);
+	QueueText(pos, 0, 20);
 }
 
 void DestroyFonts (void)
 {
-	TTF_CloseFont(roboto24);
-	TTF_CloseFont(roboto12);
+	for(int i = 0; i < MAX_LOADED_FONTS; i++)
+	{
+		if(fonts[i] == NULL)
+		{
+			continue;
+		}
+
+		TTF_CloseFont(fonts[i]);
+		fonts[i] = NULL;
+
+		printf("Free'd font at INDEX %d\n", i);
+	}
 }
 

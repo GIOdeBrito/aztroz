@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 #include <SDL2/SDL.h>
 #include "global.h"
@@ -39,14 +40,19 @@ void UpdatePlayer (SDL_Event event)
 	);
 }
 
-int PlayerPosX (void)
+int GetPlayerPosX (void)
 {
 	return player.rect.x;
 }
 
-int PlayerPosY (void)
+int GetPlayerPosY (void)
 {
 	return player.rect.y;
+}
+
+int GetPlayerAngle (void)
+{
+	return abs(player.angle);
 }
 
 void PlayerController (SDL_Event event)

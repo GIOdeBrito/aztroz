@@ -1,14 +1,28 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
+#include "controller.h"
 
 SDL_GameController* gameController = NULL;
 
-void DetectController (void)
+void DetectController (SDL_Event event)
 {
-	if(gameController != NULL)
+	if(event.type == SDL_JOYDEVICEREMOVED)
+	{
+		DestroyController();
+		return;
+	}
+
+	if(event.type != SDL_JOYDEVICEADDED)
 	{
 		return;
 	}
+
+	AddController();
+}
+
+void AddController (void)
+{
+	DestroyController();
 
 	gameController = SDL_GameControllerOpen(0);
 
@@ -27,7 +41,8 @@ void DestroyController (void)
 		return;
 	}
 
-	printf("Destroying controller: %s\n", SDL_GameControllerName(gameController));
+	printf("Free'd controller: %s\n", SDL_GameControllerName(gameController));
 
 	SDL_GameControllerClose(gameController);
+	gameController = NULL;
 }

@@ -9,7 +9,7 @@
 
 int main (void)
 {
-	printf("Initializing...\n");
+	printf("Aztroz by Giordano de Brito\n");
 
 	if(SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER | SDL_INIT_EVENTS) != 0)
 	{
@@ -27,7 +27,7 @@ int main (void)
 	// Starts the main game loop
 	GameLoop();
 
-	printf("Shutting down...\n");
+	printf("Shutting down\n");
 
 	UnloadSprites();
 

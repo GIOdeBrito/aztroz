@@ -1,4 +1,5 @@
 #define MAX_TEXT_ONSCREEN 8
+#define MAX_LOADED_FONTS 8
 
 typedef struct {
 	SDL_Texture* texture;
@@ -8,7 +9,7 @@ typedef struct {
 void InitText(void);
 void DrawOnScreenText(void);
 void ClearOnScreenText(void);
-void QueueText(char*,int,int,TTF_Font*);
+void QueueText(char*,int,int);
 void DrawFPS(void);
 void DrawPlayerPosition(void);
 void DestroyFonts(void);

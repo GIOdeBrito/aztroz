@@ -9,8 +9,8 @@ SDL_Texture* sprites[MAX_TEXTURES];
 void LoadSprites (void)
 {
 	char _sprites[][20] = {
-		"graphics/ship.png",
-		"graphics/meteor.png"
+		"data/ship.png",
+		"data/meteor.png"
 	};
 
 	for(int i = 0; i < LENGTH(_sprites); i++)
@@ -38,8 +38,8 @@ void UnloadSprites (void)
 			continue;
 		}
 
-		printf("Unloading sprite... INDEX = %d\n", i);
 		SDL_DestroyTexture(sprites[i]);
+		printf("Free'd sprite at INDEX %d\n", i);
 	}
 }
 

@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
 #include "global.h"
 #include "player.h"
 #include "hazard.h"
@@ -27,7 +26,7 @@ void GameLoop (void)
 			}
 		}
 
-		DetectController();
+		DetectController(event);
 
 		// Clear the screen
 		SDL_RenderClear(GetRenderer());
@@ -38,8 +37,10 @@ void GameLoop (void)
 		UpdatePlayer(event);
 		UpdateMeteors();
 
+		// Draws the screen
 		SDL_RenderPresent(GetRenderer());
 
+		// Clears screen text
 		ClearOnScreenText();
 	}
 

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <SDL2/SDL.h>
 #include "global.h"
+#include "window.h"
 
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;

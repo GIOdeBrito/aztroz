@@ -1,3 +1,5 @@
+#define SCREEN_X 720
+#define SCREEN_Y 720
 
 int InitWindow(void);
 int InitRenderer(void);

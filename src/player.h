@@ -17,8 +17,9 @@ typedef struct {
 
 void InstantiatePlayer(void);
 void UpdatePlayer(SDL_Event);
-int PlayerPosX(void);
-int PlayerPosY(void);
+int GetPlayerPosX(void);
+int GetPlayerPosY(void);
+int GetPlayerAngle(void);
 void PlayerController(SDL_Event);
 void PlayerMoveKeyboard(SDL_Event);
 void PlayerMoveGamepad(SDL_Event);

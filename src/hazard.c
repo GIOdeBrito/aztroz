@@ -29,7 +29,7 @@ void InitHazards (void)
 
 void UpdateMeteors (void)
 {
-	int length = LENGTH(meteors);
+	size_t length = LENGTH(meteors);
 
 	for(int i = 0; i < length; i++)
 	{
@@ -51,8 +51,8 @@ void UpdateMeteors (void)
 			continue;
 		}
 
-		meteors[i].rect.x = -64.0;
-		meteors[i].rect.y = (double) RandRange(1, SCREEN_Y);
+		meteors[i].rect.x = (double) RandRange(64, 256) * -1;
+		meteors[i].rect.y = (double) RandRange(0, SCREEN_Y - 32);
 	}
 }
 
